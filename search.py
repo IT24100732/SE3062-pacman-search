@@ -89,8 +89,39 @@ def depthFirstSearch(problem: SearchProblem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    # Create a stack for DFS
+    fringe = util.Stack()
+
+    # Get the starting state
+    start_state = problem.getStartState()
+
+    # Store: (state, path)
+    fringe.push((start_state, []))
+
+    # Keep track of states that have already been expanded
+    visited = set()
+
+    while not fringe.isEmpty():
+
+        # Get the next node from the stack
+        state, path = fringe.pop()
+
+        # If this is the goal, return the path
+        if problem.isGoalState(state):
+            return path
+
+        # Only expand a state once
+        if state not in visited:
+            visited.add(state)
+
+            # Add all successors to the stack
+            for successor, action, stepCost in problem.getSuccessors(state):
+                if successor not in visited:
+                    fringe.push((successor, path + [action]))
+
+    # No solution
+    return []
 
 
 def breadthFirstSearch(problem: SearchProblem):
